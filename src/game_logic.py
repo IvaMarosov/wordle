@@ -11,7 +11,7 @@ class WordleGame:
     @property
     def is_solved(self) -> bool:
         """Game is solved if the latest guess is equal to the secret word."""
-        return self.guesses[-1] == self.secret_word
+        return len(self.guesses) > 0 and self.guesses[-1] == self.secret_word
 
     @property
     def can_guess(self) -> bool:
@@ -19,3 +19,7 @@ class WordleGame:
         his last guess was not correct."""
 
         return not self.is_solved and len(self.guesses) < self.MAX_GUESSES
+
+    def add_guess(self, word: str) -> None:
+        """Add the latest guess in the list."""
+        self.guesses.append(word)
