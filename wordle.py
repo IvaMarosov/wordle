@@ -3,7 +3,15 @@ from src.game_logic import WordleGame
 def main():
     print("Hello from wordle!")
     game = WordleGame("APPLE")
-    print(game)
+
+    while game.can_guess:
+        x = input("Enter your guess: ")
+        game.add_guess(x)
+
+    if game.is_solved:
+        print("You solved the puzzle!")
+    else:
+        print("You run out of guesses!")
 
 
 if __name__ == "__main__":
