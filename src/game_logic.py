@@ -1,3 +1,4 @@
+from src.letter_state import LetterState
 
 
 class WordleGame:
@@ -23,3 +24,20 @@ class WordleGame:
     def add_guess(self, word: str) -> None:
         """Add the latest guess in the list."""
         self.guesses.append(word)
+
+    def resolve_guess(self, word: str) -> list[LetterState]:
+        """
+        For every character in given guessed word, check that:
+        - this character is present in the secret word
+        - this character is in the correct position in the secret word
+        """
+        result = []
+
+        for i in range(self.WORD_LENGTH):
+            character = word[i]
+            letter = LetterState(character)
+            letter.is_in_word = character in set(self.secret_word)
+            letter.is_in_position = character == self.secret_word[i]
+            result.append(letter)
+
+        return result
