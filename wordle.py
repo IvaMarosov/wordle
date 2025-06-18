@@ -9,13 +9,15 @@ def _is_valid_guess(word: str, word_length: int) -> bool:
 
 
 def display_results(wordle: WordleGame):
+    print("\nYour results so far...")
+    print(f"You have {wordle.remaining_guesses} guesses left.\n")
     for word in wordle.guesses:
         result = wordle.resolve_guess(word)
         colored_result_str = convert_result_to_color(result)
         print(colored_result_str)
 
     for _ in range(wordle.remaining_guesses):
-        print("_" * wordle.WORD_LENGTH)
+        print("_ " * wordle.WORD_LENGTH)
 
 
 def convert_result_to_color(result: list[LetterState]) -> str:
@@ -30,7 +32,7 @@ def convert_result_to_color(result: list[LetterState]) -> str:
         colored_letter = color + letter.character + Fore.RESET
         result_with_color.append(colored_letter)
 
-    return "".join(result_with_color)
+    return " ".join(result_with_color)
 
 
 def main():
