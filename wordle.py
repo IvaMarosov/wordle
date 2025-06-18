@@ -1,6 +1,8 @@
 from src.game_logic import WordleGame
 from src.letter_state import LetterState
+from src.words import get_list_of_words
 from colorama import Fore
+import random
 
 
 def _is_valid_guess(word: str, word_length: int) -> bool:
@@ -54,7 +56,11 @@ def draw_border(lines: list[str], box_size: int = 9, padding: int = 1):
 
 def main():
     print("Hello from wordle!")
-    game = WordleGame("APPLE")
+
+    words = get_list_of_words()
+    secret_word = random.choice(words).upper()
+
+    game = WordleGame()
 
     while game.can_guess:
         x = input("Enter your guess: ")
@@ -74,6 +80,7 @@ def main():
         print("You solved the puzzle!")
     else:
         print("You run out of guesses!")
+        print(f"The correct word was: {secret_word}!")
 
 
 if __name__ == "__main__":
