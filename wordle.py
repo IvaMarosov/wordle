@@ -14,6 +14,9 @@ def display_results(wordle: WordleGame):
         colored_result_str = convert_result_to_color(result)
         print(colored_result_str)
 
+    for _ in range(wordle.remaining_guesses):
+        print("_" * wordle.WORD_LENGTH)
+
 
 def convert_result_to_color(result: list[LetterState]) -> str:
     result_with_color = []

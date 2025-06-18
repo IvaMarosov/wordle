@@ -10,6 +10,11 @@ class WordleGame:
         self.guesses = []
 
     @property
+    def remaining_guesses(self) -> int:
+        """How many guesses has the player till the game is over."""
+        return self.MAX_GUESSES - len(self.guesses)
+
+    @property
     def is_solved(self) -> bool:
         """Game is solved if the latest guess is equal to the secret word."""
         return len(self.guesses) > 0 and self.guesses[-1] == self.secret_word
@@ -19,7 +24,7 @@ class WordleGame:
         """The player has another guess if he does not run out of guesses and
         his last guess was not correct."""
 
-        return not self.is_solved and len(self.guesses) < self.MAX_GUESSES
+        return not self.is_solved and self.remaining_guesses > 0
 
     def add_guess(self, word: str) -> None:
         """Add the latest guess in the list."""
