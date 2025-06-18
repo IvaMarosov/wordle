@@ -22,8 +22,8 @@ class WordleGame:
     @property
     def can_guess(self) -> bool:
         """The player has another guess if he does not run out of guesses and
-        his last guess was not correct."""
-
+        his last guess was not correct.
+        """
         return not self.is_solved and self.remaining_guesses > 0
 
     def add_guess(self, word: str) -> None:
@@ -31,8 +31,7 @@ class WordleGame:
         self.guesses.append(word)
 
     def resolve_guess(self, word: str) -> list[LetterState]:
-        """
-        For every character in given guessed word, check that:
+        """For every character in given guessed word, check that:
         - this character is present in the secret word
         - this character is in the correct position in the secret word
         """

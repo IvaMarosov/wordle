@@ -1,8 +1,10 @@
+import random
+
+from colorama import Fore
+
 from src.game_logic import WordleGame
 from src.letter_state import LetterState
 from src.words import get_list_of_words
-from colorama import Fore
-import random
 
 
 def _is_valid_guess(word: str, word_length: int) -> bool:
