@@ -8,16 +8,21 @@ def _is_valid_guess(word: str, word_length: int) -> bool:
     return len(word) == word_length
 
 
-def display_results(wordle: WordleGame):
+def display_results(wordle: WordleGame) -> None:
     print("\nYour results so far...")
     print(f"You have {wordle.remaining_guesses} guesses left.\n")
+
+    lines = []
+
     for word in wordle.guesses:
         result = wordle.resolve_guess(word)
         colored_result_str = convert_result_to_color(result)
-        print(colored_result_str)
+        lines.append(colored_result_str)
 
     for _ in range(wordle.remaining_guesses):
-        print("_ " * wordle.WORD_LENGTH)
+        lines.append(" ".join(["_"] * wordle.WORD_LENGTH))
+
+    draw_border(lines)
 
 
 def convert_result_to_color(result: list[LetterState]) -> str:
@@ -33,6 +38,18 @@ def convert_result_to_color(result: list[LetterState]) -> str:
         result_with_color.append(colored_letter)
 
     return " ".join(result_with_color)
+
+
+def draw_border(lines: list[str], box_size: int = 9, padding: int = 1):
+    content_length = box_size + padding * 2
+
+    top_border = "┌" + "─" * content_length + "┐"
+    bottom_border = "└" + "─" * content_length + "┘"
+    space = " " * padding
+
+    print(top_border)
+    [print("│" + space + line + space + "│") for line in lines]
+    print(bottom_border)
 
 
 def main():
