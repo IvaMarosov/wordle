@@ -1,4 +1,4 @@
-from src.letter_state import LetterState
+from src.letter_state import LetterState, ResolvedGuess
 
 
 class WordleGame:
@@ -7,17 +7,20 @@ class WordleGame:
 
     def __init__(self, secret_word: str):
         self.secret_word = secret_word
-        self.guesses = []
+        self.resolved_guesses = []
 
     @property
     def remaining_guesses(self) -> int:
         """How many guesses has the player till the game is over."""
-        return self.MAX_GUESSES - len(self.guesses)
+        return self.MAX_GUESSES - len(self.resolved_guesses)
 
     @property
     def is_solved(self) -> bool:
         """Game is solved if the latest guess is equal to the secret word."""
-        return len(self.guesses) > 0 and self.guesses[-1] == self.secret_word
+        return (
+            len(self.resolved_guesses) > 0
+            and self.resolved_guesses[-1] == self.secret_word
+        )
 
     @property
     def can_guess(self) -> bool:
@@ -25,10 +28,6 @@ class WordleGame:
         his last guess was not correct.
         """
         return not self.is_solved and self.remaining_guesses > 0
-
-    def add_guess(self, word: str) -> None:
-        """Add the latest guess in the list."""
-        self.guesses.append(word)
 
     def resolve_guess(self, word: str) -> list[LetterState]:
         """For every character in given guessed word, check that:
@@ -45,3 +44,9 @@ class WordleGame:
             result.append(letter)
 
         return result
+
+    def add_guess(self, word: str) -> None:
+        """Add the latest guess in the list."""
+        letter_states = self.resolve_guess(word)
+        resolved_guess = ResolvedGuess(word, letter_states)
+        self.resolved_guesses.append(resolved_guess)

@@ -27,9 +27,8 @@ def _display_results(wordle: WordleGame) -> None:
 
     lines = []
 
-    for word in wordle.guesses:
-        result = wordle.resolve_guess(word)
-        colored_result_str = _convert_result_to_color(result)
+    for result in wordle.resolved_guesses:
+        colored_result_str = _convert_result_to_color(result.letters)
         lines.append(colored_result_str)
 
     for _ in range(wordle.remaining_guesses):
