@@ -7,9 +7,14 @@ from src.letter_state import LetterState
 from src.words import get_list_of_words
 
 
-def _is_valid_guess(word: str, word_length: int) -> bool:
+def _length_match(word: str, word_length: int) -> bool:
     """Check if the guessed word has the expected length."""
     return len(word) == word_length
+
+
+def _is_word_from_database(word: str, possible_words: list[str]) -> bool:
+    """Check if guessed word is in database of 5-letter words."""
+    return word.lower() in possible_words
 
 
 def display_results(wordle: WordleGame) -> None:
@@ -59,20 +64,23 @@ def draw_border(lines: list[str], box_size: int = 9, padding: int = 1):
 def main():
     print("Hello from wordle!")
 
-    words = get_list_of_words()
+    words = sorted(get_list_of_words())
     secret_word = random.choice(words).upper()
 
-    game = WordleGame()
+    game = WordleGame(secret_word)
 
     while game.can_guess:
         x = input("Enter your guess: ")
         x = x.upper()
-        if not _is_valid_guess(x, game.WORD_LENGTH):
+        if not _length_match(x, game.WORD_LENGTH):
             print(
                 Fore.RED
                 + f"Word must be {game.WORD_LENGTH} letters long.."
                 + Fore.RESET
             )
+            continue
+        if not _is_word_from_database(x, words):
+            print(Fore.RED + "Word is not in the list of possible words." + Fore.RESET)
             continue
 
         game.add_guess(x)
