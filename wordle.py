@@ -1,4 +1,5 @@
 import random
+import string
 
 from colorama import Fore
 
@@ -67,18 +68,34 @@ def _draw_border(lines: list[str], box_size: int = 9, padding: int = 1):
     print(bottom_border)
 
 
+def _update_available_letters(unused_letters: set, word: str) -> set[str]:
+    """Update lists of used and unused letters from the last guessed word."""
+    for letter in word:
+        if letter in unused_letters:
+            unused_letters.remove(letter)
+
+    return unused_letters
+
+
 def main():
     """Let´s play game of Wordle."""
     print("Hello from wordle!")
 
+    # randomly pick secret word
     words = sorted(get_list_of_words())
     secret_word = random.choice(words).upper()
 
+    # init the game
     game = WordleGame(secret_word)
+
+    # at the beginning, all alphabet letters are unused
+    unused_letters = set(string.ascii_uppercase)
 
     while game.can_guess:
         x = input("Enter your guess: ")
         x = x.upper()
+
+        # validate guessed word
         if not _length_match(x, game.WORD_LENGTH):
             print(
                 Fore.RED
@@ -90,8 +107,14 @@ def main():
             print(Fore.RED + "Word is not in the list of possible words." + Fore.RESET)
             continue
 
+        # add latest guess to the previous ones
         game.add_guess(x)
+
         _display_results(game)
+
+        # get all unused letters so far
+        _update_available_letters(unused_letters, x)
+        print(f"UNUSED LETTERS: {" ".join(unused_letters)}")
 
     if game.is_solved:
         print("You solved the puzzle!")

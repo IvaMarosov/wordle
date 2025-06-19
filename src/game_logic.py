@@ -19,7 +19,7 @@ class WordleGame:
         """Game is solved if the latest guess is equal to the secret word."""
         return (
             len(self.resolved_guesses) > 0
-            and self.resolved_guesses[-1] == self.secret_word
+            and self.resolved_guesses[-1].guess == self.secret_word
         )
 
     @property

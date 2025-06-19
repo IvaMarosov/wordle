@@ -6,7 +6,7 @@ This project was inspired by [youtube video](https://youtu.be/SyWeex-S6d0?si=2iE
 
 Some of the additions I want to add:
 
-- [ ] show unused letters
+- [x] show unused letters
 - [ ] store words that were already used in the previous games
 - [ ] store statistics
 
