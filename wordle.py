@@ -17,7 +17,11 @@ def _is_word_from_database(word: str, possible_words: list[str]) -> bool:
     return word.lower() in possible_words
 
 
-def display_results(wordle: WordleGame) -> None:
+def _display_results(wordle: WordleGame) -> None:
+    """
+    Print evaluated guess in the terminal.
+    Format the guesses into neat table with empty spots for remaining guesses.
+    """
     print("\nYour results so far...")
     print(f"You have {wordle.remaining_guesses} guesses left.\n")
 
@@ -25,16 +29,18 @@ def display_results(wordle: WordleGame) -> None:
 
     for word in wordle.guesses:
         result = wordle.resolve_guess(word)
-        colored_result_str = convert_result_to_color(result)
+        colored_result_str = _convert_result_to_color(result)
         lines.append(colored_result_str)
 
     for _ in range(wordle.remaining_guesses):
         lines.append(" ".join(["_"] * wordle.WORD_LENGTH))
 
-    draw_border(lines)
+    _draw_border(lines)
 
 
-def convert_result_to_color(result: list[LetterState]) -> str:
+def _convert_result_to_color(result: list[LetterState]) -> str:
+    """Map color to letter based on its state. This color will be used in the display of
+    evaluated guesses."""
     result_with_color = []
     for letter in result:
         if letter.is_in_position:
@@ -49,7 +55,8 @@ def convert_result_to_color(result: list[LetterState]) -> str:
     return " ".join(result_with_color)
 
 
-def draw_border(lines: list[str], box_size: int = 9, padding: int = 1):
+def _draw_border(lines: list[str], box_size: int = 9, padding: int = 1):
+    """Add border around the table with guesses."""
     content_length = box_size + padding * 2
 
     top_border = "┌" + "─" * content_length + "┐"
@@ -62,6 +69,7 @@ def draw_border(lines: list[str], box_size: int = 9, padding: int = 1):
 
 
 def main():
+    """Let´s play game of Wordle."""
     print("Hello from wordle!")
 
     words = sorted(get_list_of_words())
@@ -84,7 +92,7 @@ def main():
             continue
 
         game.add_guess(x)
-        display_results(game)
+        _display_results(game)
 
     if game.is_solved:
         print("You solved the puzzle!")
